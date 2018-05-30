@@ -928,16 +928,7 @@ go
 --          1 - failed
 --
 -- security: this is a public interface object.
---
-create procedure proc_perfstat
-(
-	@distribution_data sysname = '%',
-	@agent_name sysname = '%',
-	@publisher_db sysname = '%',
-	@publication_name sysname = '%',
-	@timeperiod int = -1,
-	@backup_troubleshooting bit = 0
-)
+--)
 as
 begin
 	declare @is_env_set_up bit = 0
@@ -951,23 +942,35 @@ begin
 	return (0) 
 end
 go
+	     
 
 
 exec proc_perfstat
---exec proc_perfstat @distribution_data = '118022817725608_MS_DistBackup2'
+--exec proc_perfstat @distribution_data = 'distribution'
 --exec proc_perfstat @timeperiod=12
 --exec proc_perfstat @publisher_db = 'Pub1'
 --exec proc_perfstat @publication_name = 'pub0'
---exec proc_perfstat @agent_name = 'ZIMWANG2\BAK1-Pub1-1'
---exec proc_perfstat @agent_name = 'ZIMWANG2\BAK1-Pub1-pub0-ZIMWANG2\BAK2-1'
---exec proc_perfstat @distribution_data = 'distribution_BAK1', @publisher_db = 'Pub1', @publication_name = 'pub0', @agent_name = 'ZIMWANG2\BAK1-Pub1-1'
---exec proc_perfstat @distribution_data = 'distribution_BAK1', @publisher_db = 'Pub1', @publication_name = 'pub0', @agent_name = 'ZIMWANG2\BAK1-Pub1-pub0-ZIMWANG2\BAK2-1'
+--exec proc_perfstat @agent_name = 'PUBLISHER\BAK1-Pub1-1'
+--exec proc_perfstat @agent_name = 'PUBLISHER\BAK1-Pub1-pub0-SUBSCRIBER\BAK2-1'
+--exec proc_perfstat @distribution_data = 'distribution', @publisher_db = 'Pub1', @publication_name = 'pub0', @agent_name = 'PUBLISHER\BAK1-Pub1-1'
+--exec proc_perfstat @distribution_data = 'distribution', @publisher_db = 'Pub1', @publication_name = 'pub0', @agent_name = 'PUBLISHER\BAK1-Pub1-pub0-SUBSCRIBER\BAK2-1'
 
 
---exec proc_perfstat @distribution_data = N'MS_DistBackup3', @backup_troubleshooting = 1
---@publisher_db = 'iPACS3_2017_01', @publication_name = 'iPACS3_2017_01_pub'
---exec proc_perfstat @distribution_data = 'MS_DistBackup2', @agent_name = 'USSLTC1471-iPACS3_2017_01-21',  @backup_troubleshooting = 1
---exec proc_perfstat @distribution_data = 'MS_DistBackup2', @agent_name = 'USSLTC1471-iPACS3_2017_01-iPACS3_2017_01_pub-USSLTC1474-20',  @backup_troubleshooting = 1
+--exec proc_perfstat @distribution_data = N'MS_DistributorBackup', @backup_troubleshooting = 1
+--@publisher_db = 'Pub1', @publication_name = 'pub0'
+--exec proc_perfstat @distribution_data = 'MS_DistributorBackup', @agent_name = 'PUBLISHER-iPACS3_2017_01-21',  @backup_troubleshooting = 1
+--exec proc_perfstat @distribution_data = 'MS_DistributorBackup', @agent_name = 'PUBLISHER-iPACS3_2017_01-iPACS3_2017_01_pub-USSLTC1474-20',  @backup_troubleshooting = 1
 
 --exec proc_perfstat_distdb_backup @distribution_db = 'distribution'
+	     
+	     
+create procedure proc_perfstat
+(
+	@distribution_data sysname = '%',
+	@agent_name sysname = '%',
+	@publisher_db sysname = '%',
+	@publication_name sysname = '%',
+	@timeperiod int = -1,
+	@backup_troubleshooting bit = 0
+
 
