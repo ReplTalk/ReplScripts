@@ -11,7 +11,7 @@ ON SERVER
 ADD EVENT sqlos.wait_info( 
        ACTION (sqlserver.session_id) 
     WHERE (
-	[package0].[equal_uint64]([sqlserver].[session_id],(180)) ---chnage reader thread SPID
+	[package0].[equal_uint64]([sqlserver].[session_id],(180)) ---change to Repl agent session_id\SPID
 	--OR [package0].[equal_uint64]([sqlserver].[session_id],(57)) 
 	--OR [package0].[equal_uint64]([sqlserver].[session_id],(59)) 
 	--OR [package0].[equal_uint64]([sqlserver].[session_id],(61)) 
@@ -21,7 +21,7 @@ ADD EVENT sqlos.wait_info(
 ADD EVENT sqlos.wait_info_external( 
        ACTION (sqlserver.session_id) 
     WHERE 
-	([package0].[equal_uint64]([sqlserver].[session_id],(180)) ---chnage reader thread SPID
+	([package0].[equal_uint64]([sqlserver].[session_id],(180)) ---change to Repl agent session_id\SPID
 	--OR [package0].[equal_uint64]([sqlserver].[session_id],(57)) 
 	--OR [package0].[equal_uint64]([sqlserver].[session_id],(59)) 
 	--OR [package0].[equal_uint64]([sqlserver].[session_id],(61)) 
