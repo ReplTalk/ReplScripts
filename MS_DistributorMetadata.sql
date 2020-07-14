@@ -45,6 +45,10 @@ SELECT * INTO MSsubscriptions from Distribution..MSsubscriptions with (nolock)
 SELECT * INTO MSsync_states from Distribution..MSsync_states with (nolock)
 SELECT * INTO MStracer_history from Distribution..MStracer_history with (nolock)
 SELECT * INTO MStracer_tokens from Distribution..MStracer_tokens with (nolock)
+
+SELECT * INTO [MSredirected_publishers] from Distribution..[MSredirected_publishers] with (nolock)
+SELECT * INTO [MSrepl_agent_jobs] from Distribution..[MSrepl_agent_jobs] with (nolock)
+SELECT * INTO [MSreplservers] from Distribution..[MSreplservers] with (nolock)
 Go
  
 --Change backup location if needed.
