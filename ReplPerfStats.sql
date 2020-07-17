@@ -72,6 +72,12 @@ go
 --          1 - failed
 --
 -- security: this is a public interface object.
+--7/14/20 tzakir
+--changed this
+--		exec('select * into '+ @db_backup_name +'..servers from master.sys.servers with (nolock)')
+--to
+--		exec('select * into '+ @db_backup_name +'..servers from master..sysservers with (nolock)')
+
 --
 create procedure proc_perfstat_distdb_backup
 (
@@ -145,7 +151,7 @@ begin
 	if (object_id(@distribution_db + '..MSreplservers') is not null)
 		exec('select * into '+ @db_backup_name +'..servers from ' + @distribution_db + '..MSreplservers with (nolock)')
 	else
-		exec('select * into '+ @db_backup_name +'..servers from master.sys.servers with (nolock)')
+		exec('select * into '+ @db_backup_name +'..servers from master..sysservers with (nolock)')
 
 	-- back up the database and delete it after back up.
 	exec('backup database '+ @db_backup_name +' to disk=''c:\' + @db_backup_name + '.bak''')
@@ -599,6 +605,10 @@ go
 --
 -- security: this is a public interface object.
 --
+--7/14/20 tzakir
+--changed master.sys.servers to master..sysservers so that srvid and srvname columns are same in sysservers and MSreplServers
+
+
 create procedure proc_perfstat_data_process
 (
 @agent_name sysname = '%',
@@ -658,26 +668,26 @@ begin
 		-- if its in live mode, the input database is not a restored back up db, and recovered distribution database is not in AG group
 		if (@backup_troubleshooting = 0 and object_id(@distdbname + '..MSreplservers') is null)
 		begin
-			set @filter_lr = concat('left join master.sys.servers srvs on srvs.server_id = la.publisher_id ', @filter_lr)
-			set @filter_d =  concat('left join master.sys.servers srvs on srvs.server_id = da.publisher_id left join master.sys.servers srvs2 on srvs2.server_id = sub.subscriber_id ', @filter_d)
+			set @filter_lr = concat('left join master..sysservers srvs on srvs.srvid = la.publisher_id ', @filter_lr)
+			set @filter_d =  concat('left join master..sysservers srvs on srvs.srvid = da.publisher_id left join master..sysservers srvs2 on srvs2.server_id = sub.subscriber_id ', @filter_d)
 		end
 		else if object_id(@distdbname + '..MSreplservers') is not null
 		begin
-			set @filter_lr = concat('left join '+ @distdbname + '..MSreplservers srvs on srvs.server_id = la.publisher_id ', @filter_lr)
-			set @filter_d =  concat('left join '+ @distdbname + '..MSreplservers srvs on srvs.server_id = da.publisher_id left join '+ @distdbname + '..MSreplservers srvs2 on srvs2.server_id = sub.subscriber_id ', @filter_d)
+			set @filter_lr = concat('left join '+ @distdbname + '..MSreplservers srvs on srvs.srvid = la.publisher_id ', @filter_lr)
+			set @filter_d =  concat('left join '+ @distdbname + '..MSreplservers srvs on srvs.srvid = da.publisher_id left join '+ @distdbname + '..MSreplservers srvs2 on srvs2.srvid = sub.subscriber_id ', @filter_d)
 		end
 		else 
 		begin
 			-- create a fake one if there is no server table in back up file
-			if object_id(@distdbname + '.dbo.servers') is null
-				exec ('create table ' + @distdbname + '.dbo.servers (server_id int, name nvarchar(50))')
-			set @filter_lr = concat('left join ' + @distdbname + '.dbo.servers srvs on srvs.server_id = la.publisher_id ', @filter_lr)
-			set @filter_d =  concat('left join ' + @distdbname + '.dbo.servers srvs on srvs.server_id = da.publisher_id left join ' + @distdbname+'.dbo.servers srvs2 on srvs2.server_id = sub.subscriber_id ', @filter_d)
+			if object_id(@distdbname + '.dbo.sysservers') is null
+				exec ('create table ' + @distdbname + '.dbo.servers (srvid int, srvname nvarchar(50))')
+			set @filter_lr = concat('left join ' + @distdbname + '.dbo.servers srvs on srvs.srvid = la.publisher_id ', @filter_lr)
+			set @filter_d =  concat('left join ' + @distdbname + '.dbo.servers srvs on srvs.srvid = da.publisher_id left join ' + @distdbname+'.dbo.servers srvs2 on srvs2.srvid = sub.subscriber_id ', @filter_d)
 		end
 
 		-- generate help info except casting the xml statistic data into table format for logreader agent and distribution agent seperately. 
 		exec ('insert into '+ @stat_info_tablename +' (time, comments, agent_id,agent_type, agent_name, publisher_id, publisher_db, publisher_name)'+'
-		select lrhist.time, lrhist.comments, lrhist.agent_id, ''logreader'', la.name, la.publisher_id, la.publisher_db, srvs.name
+		select lrhist.time, lrhist.comments, lrhist.agent_id, ''logreader'', la.name, la.publisher_id, la.publisher_db, srvs.srvname
 		from ' + @distdbname + '..MSlogreader_history lrhist 
 		left join ' + @distdbname + '..MSlogreader_agents la
 		on lrhist.agent_id = la.id
@@ -685,8 +695,8 @@ begin
 
 		exec('insert into '+ @stat_info_tablename +' (time, comments, agent_id, agent_type, agent_name, publisher_id, publisher_db, publisher_name,
 			subscriber_id, subscriber_name, subscription_database, article_id, article_name, publication_id, publication_name)
-		select dhist.time, dhist.comments, dhist.agent_id, ''distribution'', da.name, da.publisher_id, da.publisher_db, srvs.name, 
-		sub.subscriber_id, srvs2.name, sub.subscriber_db, sub.article_id, arc.article, sub.publication_id, pub.publication
+		select dhist.time, dhist.comments, dhist.agent_id, ''distribution'', da.name, da.publisher_id, da.publisher_db, srvs.srvname, 
+		sub.subscriber_id, srvs2.srvname, sub.subscriber_db, sub.article_id, arc.article, sub.publication_id, pub.publication
 		from '+ @distdbname + '..MSdistribution_history dhist 
 		left join '+ @distdbname + '..MSdistribution_agents da
 		on dhist.agent_id = da.id
@@ -772,7 +782,7 @@ begin
 		declare @distagent_issue_replinfo nvarchar(80) =  @distagent_issue + '_replinfo'
 
 		--- for rows of which the state has been marked as 2, 
-		--- raised when an agent’s reader thread waits long time.
+		--- raised when an agentâ€™s reader thread waits long time.
 		-- trouble shoot logreader agent's reader thread
 		exec('insert into ' + @logragent_issue + '(agent_id, agent_name,
 				state, cmds, callstogetreplcmds, sincelaststats_reader_fetch, sincelaststats_reader_wait, time, 
@@ -954,16 +964,20 @@ go
 
 
 exec proc_perfstat
---exec proc_perfstat @distribution_data = 'distribution'
+--exec proc_perfstat @distribution_data = '118022817725608_MS_DistBackup2'
 --exec proc_perfstat @timeperiod=12
 --exec proc_perfstat @publisher_db = 'Pub1'
 --exec proc_perfstat @publication_name = 'pub0'
---exec proc_perfstat @agent_name = 'PUBLISHER-Pub1-1'
---exec proc_perfstat @agent_name = 'PUBLISHER-Pub1-pub0-SUBSCRIBER-1'
---exec proc_perfstat @distribution_data = 'distribution', @publisher_db = 'Pub1', @publication_name = 'pub0', @agent_name = 'PUBLISHER-Pub1-1'
---exec proc_perfstat @distribution_data = 'distribution', @publisher_db = 'Pub1', @publication_name = 'pub0', @agent_name = 'PUBLISHER-Pub1-pub0-SUBSCRIBER'
+--exec proc_perfstat @agent_name = 'ZIMWANG2\BAK1-Pub1-1'
+--exec proc_perfstat @agent_name = 'ZIMWANG2\BAK1-Pub1-pub0-ZIMWANG2\BAK2-1'
+--exec proc_perfstat @distribution_data = 'distribution_BAK1', @publisher_db = 'Pub1', @publication_name = 'pub0', @agent_name = 'ZIMWANG2\BAK1-Pub1-1'
+--exec proc_perfstat @distribution_data = 'distribution_BAK1', @publisher_db = 'Pub1', @publication_name = 'pub0', @agent_name = 'ZIMWANG2\BAK1-Pub1-pub0-ZIMWANG2\BAK2-1'
 
---Noted: execute against restored distribution database or database collected from metadata collection scripts
---exec proc_perfstat @distribution_data = 'MS_DistributorBackup', @publisher_db = 'Pub1', @publication_name = 'pub0', @backup_troubleshooting = 1
---exec proc_perfstat @distribution_data = 'MS_DistributorBackup', @agent_name = 'PUBLISHER-Pub1-1'  @backup_troubleshooting = 1
---exec proc_perfstat @distribution_data = 'MS_DistributorBackup', @agent_name = 'PUBLISHER-Pub1-pub0-SUBSCRIBER', @backup_troubleshooting = 1
+
+--exec proc_perfstat @distribution_data = N'MS_DistBackup3', @backup_troubleshooting = 1
+--@publisher_db = 'iPACS3_2017_01', @publication_name = 'iPACS3_2017_01_pub'
+--exec proc_perfstat @distribution_data = 'MS_DistBackup2', @agent_name = 'USSLTC1471-iPACS3_2017_01-21',  @backup_troubleshooting = 1
+--exec proc_perfstat @distribution_data = 'MS_DistBackup2', @agent_name = 'USSLTC1471-iPACS3_2017_01-iPACS3_2017_01_pub-USSLTC1474-20',  @backup_troubleshooting = 1
+
+--exec proc_perfstat_distdb_backup @distribution_db = 'distribution'
+
