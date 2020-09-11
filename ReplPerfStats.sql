@@ -669,7 +669,7 @@ begin
 		if (@backup_troubleshooting = 0 and object_id(@distdbname + '..MSreplservers') is null)
 		begin
 			set @filter_lr = concat('left join master..sysservers srvs on srvs.srvid = la.publisher_id ', @filter_lr)
-			set @filter_d =  concat('left join master..sysservers srvs on srvs.srvid = da.publisher_id left join master..sysservers srvs2 on srvs2.server_id = sub.subscriber_id ', @filter_d)
+			set @filter_d =  concat('left join master..sysservers srvs on srvs.srvid = da.publisher_id left join master..sysservers srvs2 on srvs2.srvid = sub.subscriber_id ', @filter_d)
 		end
 		else if object_id(@distdbname + '..MSreplservers') is not null
 		begin
