@@ -6,7 +6,7 @@
 --
 -- purpose: this script is to troubleshoot replication performance issue for css engineers to save their time.
 --  
--- date:  02/15/2018
+-- date:  07/17/2020
 --
 -- @endheader@
 --
