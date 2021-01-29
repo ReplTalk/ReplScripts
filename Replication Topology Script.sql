@@ -11,7 +11,7 @@
 *	*********************************************************************************
 */
 
---
+
 SET NOCOUNT ON
 GO
 IF ((SELECT COUNT(*) FROM TEMPDB.SYS.TABLES WHERE NAME = '##CE') > 0)
