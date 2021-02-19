@@ -3,14 +3,13 @@
 *	PURPOSE		:	Getting Replication Topology
 *	VERSION		:	1.1
 *	RUNS ON		:	The Distributor Server; against the Distribution Database
-*	Script written by Suhas De & Gaurav Mathur, Franklin Gamboa Morera
-*	Copyright Microsoft 2019
+*	Script written by Suhas De & Gaurav Mathur, Franklin Gamboa Morera, Taiyeb Zakir
+*	Copyright Microsoft 
 *	*********************************************************************************
 *	This script queries the Distribution Database for Replication topology
-*	Upgraded to support SQL 2008 through SQL 2017
+*	Upgraded to support SQL 2008 and above
 *	*********************************************************************************
 */
-
 
 SET NOCOUNT ON
 GO
