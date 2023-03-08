@@ -8,6 +8,9 @@
 CREATE DATABASE MS_PublisherMetadata
 GO
 
+ALTER DATABASE MS_PublisherMetadata SET RECOVERY SIMPLE WITH NO_WAIT;
+GO
+
 USE <replace with published database name>
 GO
 

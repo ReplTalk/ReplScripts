@@ -6,6 +6,9 @@
 create database MS_SubscriberMetadata
 go
 
+ALTER DATABASE MS_SubscriberMetadata SET RECOVERY SIMPLE WITH NO_WAIT;
+GO
+
 Use <replace with subscriber database name>
 go
 

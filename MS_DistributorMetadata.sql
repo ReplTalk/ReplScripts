@@ -6,6 +6,8 @@
 
 CREATE DATABASE MS_DistBackup
 Go
+ALTER DATABASE MS_DistBackup SET RECOVERY SIMPLE WITH NO_WAIT;
+GO
 USE MS_DistBackup
 go
 -- For distribution DB +250gb range consider commenting next 4 select statements
