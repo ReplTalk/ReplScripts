@@ -1,0 +1,21 @@
+1. [Introduction](#introduction)
+1. [Minimum Requirements](#minimum-requirements)
+1. [Download location](#download-location)
+1. [How to use](#how-to-use)
+    - [Automate data collection](#automate-data-collection)
+    - [Interrupt execution](#interrupt-execution)
+    - [Parameters](#parameters)
+    - [Examples](#examples)
+1. [Scenarios](#scenarios)
+1. [Output folders](#output-folders)
+1. [Logging](#logging)
+1. [Permissions](#permissions)
+1. [Targeted SQL instances](#targeted-sql-instances)
+1. [Security](#security)
+1. [Sample output](#sample-output)
+1. [Test Suite](#test-suite)
+1. [Script to cleanup an incomplete shutdown of SQL LogScout](#script-to-cleanup-an-incomplete-shutdown-of-sql-logscout)
+1. [SQL LogScout as a scheduled task in Windows Task Scheduler](#schedule-sql-logscout-as-a-task-to-automate-execution)
+
+# Introduction
+
