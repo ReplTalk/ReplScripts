@@ -6,7 +6,7 @@
 # Introduction
 ReplicationAndAG script allows us to seamlessly configure replication in AG.It helps us to configure publisher, distributor and subscriber in AG. 
 The script supports multiple configuration like there could be variable number of nodes participating in AG, sql server instances which are participating in AG could be either in single subnet or multisubnet environment.
-The script first configures the AG environemnt and then configure the distributor, publisher and subscriber.
+The script first configures the AG environemnt and then configures the distributor, publisher and subscriber.
 
 # Prerequisites
 - All the sql server instances participating in an AG should have the same version of sql server.
