@@ -35,12 +35,20 @@ Open all the 3 scripts i.e distag.sql, pubag.sql and subag.sql and set all the i
 ![image](https://github.com/sbhuwalka/ReplScripts/assets/91614203/51cd9184-879d-42a7-851e-baafb83381d9)
 
 The above image shows the section in script to input all the variables.
-There is a variable called **generateScript** in the script. This determines whether we need to generate the script to setup the replication in AG or to cleanup the existing setp or both.
+There is a variable called **generateScript** in the script. This determines whether we need to generate the script to setup the replication in AG or to cleanup the existing setup or both.
+There could be 3 values for the generateScript variable:
+setup -> generate the scipt for setting up publisher/distributor/subscriber in AG environment
+cleanup -> generate the script for cleaning up publisher/distributor/subscriber in AG environment
+both -> generate the script for setting and cleaning up publisher/distributor/subscriber in AG environment
 
 ![image](https://github.com/sbhuwalka/ReplScripts/assets/91614203/df7771f2-d188-4c33-912e-615227eeb98b)
 
-As shown in the above image if we want to generate the script to setup the replication in AG we can use the value of variable as setup.
+As shown in the above image if we want to generate the script to setup publisher/distributor/subscriber in AG we can use the value of variable as setup.
 
+In the script there are 3 tables defined @distributorNodes, @publisherNodes and @subscriberNodes
+The distributor, publisher and subscriber replcias information needs to be filled in these table.
+
+The following steps needs to be followed to setup replication in AG:
 - Now first run the distag.sql and then copy the output. The output would be in tsql format. Execute the output to setup distributors in AG
 - After that run the pubag.sql and then copy the output. Output here would also be in tsql format. Execute the output to setup publishers in AG. After that we can create publication using SSMS UI or using the 
 stored procs.
