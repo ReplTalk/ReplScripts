@@ -46,7 +46,7 @@ both -> generate the script for setting and cleaning up publisher/distributor/su
 As shown in the above image if we want to generate the script to setup publisher/distributor/subscriber in AG we can use the value of variable as setup.
 
 In the script there are 3 tables defined @distributorNodes, @publisherNodes and @subscriberNodes
-The distributor, publisher and subscriber replcias information needs to be filled in these table.
+The distributor, publisher and subscriber replicas information needs to be input in these table
 
 The following steps needs to be followed to setup replication in AG:
 - Now first run the distag.sql and then copy the output. The output would be in tsql format. Execute the output to setup distributors in AG
