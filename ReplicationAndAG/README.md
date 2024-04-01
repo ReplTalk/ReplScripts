@@ -18,10 +18,10 @@ The script first configures the AG environemnt and then configures the distribut
 - If the sql server instances that are hosting the availability replicas of an AG run as different account,then
   the login of each account must be created in master on the other server instance and that login must be granted CONNECT permission.
 - Make 2 shared folders one for backups and other for replication and provide the path in backupSharePath and replDirPath folder.
-- Give sql service account control of the following registry location for all the nodes.
+- Give sql service account FULL control permission of the following registry location for all the nodes.
   HKLM\SOFTWARE\WOW6432Node\Microsoft\MSSQLServer\Client\ConnectTo
   HKLM\SOFTWARE\Microsoft\MSSQLServer\Client\ConnectTo
-- In case of AG in multisubnet environment MultiSubnetFailover property should be added and set to true in the log reader
+- In case of AG in multisubnet environment MultiSubnetFailover property should be added manually and set to true in the log reader
   and distribution agent parameter.
 - Publication and subscription databases should be created beforehand.
 - While running the cleanup script update the primary replica values with the current primary replica.
