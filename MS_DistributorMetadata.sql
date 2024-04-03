@@ -56,6 +56,17 @@ SELECT * INTO MStracer_tokens from distribution..MStracer_tokens with (nolock)
 SELECT * INTO [MSredirected_publishers] from distribution..[MSredirected_publishers] with (nolock)
 SELECT * INTO [MSrepl_agent_jobs] from distribution..[MSrepl_agent_jobs] with (nolock)
 SELECT * INTO [MSreplservers] from distribution..[MSreplservers] with (nolock)
+
+--msdb tables 
+
+SELECT aprof.*, aparam.parameter_name, aparam.value 
+INTO MSagent_profiles_parameters 
+FROM msdb..MSagent_profiles aprof WITH(NOLOCK)
+	INNER JOIN msdb..MSagent_parameters aparam WITH(NOLOCK)
+		ON (aprof.profile_id = aparam.profile_id)
+
+SELECT * INTO MSdistpublishers FROM msdb..MSdistpublishers WITH(NOLOCK)
+
 Go
  
 --Change backup location if needed.
