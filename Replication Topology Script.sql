@@ -179,7 +179,7 @@ IF ((SELECT [VALUE] FROM ##CE WHERE [DESCRIPTION] = 'Continue') = 1)
                                         RAISERROR (@CONSOLEMSG,10,1) WITH NOWAIT
                                         SET @STMT = 'SET NOCOUNT ON' + CHAR(13)
                                         SET @STMT = @STMT + 'DECLARE @NUMART INT' + CHAR(13)
-                                        SET @STMT = @STMT + 'SELECT @NUMART = COUNT(MA.objid) FROM ' + @PUBLICATIONDATABASE + '.dbo.sysmergearticles (NOLOCK) MA JOIN ' + @PUBLICATIONDATABASE + '.dbo.sysmergepublications (NOLOCK) MP ON MA.pubid = MP.pubid WHERE MP.publisher_db = ''' + @PUBLICATIONDATABASE + ''' AND MP.name = ''' + @PUBLICATIONAME + '''' + CHAR(13)
+                                        SET @STMT = @STMT + 'SELECT @NUMART = COUNT(MA.objid) FROM [' + @PUBLICATIONDATABASE + '].dbo.sysmergearticles (NOLOCK) MA JOIN [' + @PUBLICATIONDATABASE + '].dbo.sysmergepublications (NOLOCK) MP ON MA.pubid = MP.pubid WHERE MP.publisher_db = ''' + @PUBLICATIONDATABASE + ''' AND MP.name = ''' + @PUBLICATIONAME + '''' + CHAR(13)
                                         SET @STMT = @STMT + 'INSERT INTO ##CE VALUES (''NUMART'', @NUMART)' + CHAR(13)
                                         EXEC (@STMT)
                                         SELECT @NUMARTICLES = [VALUE] FROM ##CE WHERE [DESCRIPTION] = 'NUMART'
