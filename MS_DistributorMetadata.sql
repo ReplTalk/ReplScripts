@@ -54,7 +54,7 @@ SELECT * INTO MStracer_history from distribution..MStracer_history with (nolock)
 SELECT * INTO MStracer_tokens from distribution..MStracer_tokens with (nolock)
 
 SELECT * INTO [MSredirected_publishers] from distribution..[MSredirected_publishers] with (nolock)
-SELECT * INTO [MSrepl_agent_jobs] from distribution..[MSrepl_agent_jobs] with (nolock)
+SELECT * INTO [MSrepl_agent_jobs] from distribution..[MSrepl_agent_jobs] with (nolock) --MSrepl_agent_jobs exists only when the Distribution database is part of an availability group.
 SELECT * INTO [MSreplservers] from distribution..[MSreplservers] with (nolock)
 
 --msdb tables 
